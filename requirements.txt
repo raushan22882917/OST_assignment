@@ -3,5 +3,6 @@ docx
 PyPDF2
 openpyxl
 pandas
-exceptions
+warnings
+
 gunicorn
