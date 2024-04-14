@@ -5,7 +5,8 @@ from PyPDF2 import PdfReader
 import openpyxl
 import pandas as pd
 import re
-from exceptions import PendingDeprecationWarning
+from warnings import PendingDeprecationWarning
+
 
 
 
