@@ -1,8 +1,8 @@
 Flask
-docx
-PyPDF2
+python-docx
 openpyxl
 pandas
-warnings
+PyPDF2
+
 
 gunicorn
