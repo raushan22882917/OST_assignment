@@ -4,5 +4,5 @@ openpyxl
 pandas
 PyPDF2
 
-pywin32
+python-pywin32
 gunicorn
