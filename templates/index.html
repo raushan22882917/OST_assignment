@@ -9,7 +9,9 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            padding: 20px;
+            background-image: url("{{ url_for('static', filename='image/header-bg2.png') }}");
+            background-size: cover;
+
         }
 
         h1 {
@@ -18,9 +20,9 @@
         }
 
         form {
-            max-width: 400px;
+            width: 400px;
             margin: 0 auto;
-            background-color: #fff;
+            background-color: transparent;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -71,20 +73,80 @@
         #generateButton:hover {
             background-color: #218838;
         }
+
+        .container {
+            justify-content: center;
+            align-items: center;
+            width: 800px;
+            margin-left: 300px;
+            margin-top: 100px;
+        }
+
+        .instruction {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .instruction ol {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+
+        .instruction li {
+            margin-bottom: 10px;
+        }
+
+        .instruction p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .img img {
+            width: 200px;
+            height: 200px;
+        }
     </style>
 </head>
 
 <body>
-    <h1>File Data Extractor</h1>
-    <form method="POST">
-        <div class="form-group">
-            <label for="folder_path">Enter Folder Path:</label>
-            <input type="text" id="folder_path" name="folder_path">
-        </div>
-        <button type="submit" style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px; width: 100%;">Submit</button>
-    </form>
+    <div display="flex">
+        <div class="container">
+            <div>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="folder_path">Enter Folder Path:</label>
+                        <input type="text" id="folder_path" name="folder_path">
+                    </div>
+                    <button type="submit"
+                        style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px; width: 100%;">Submit</button>
+                </form>
+            </div>
+            <div class="instruction">
+                <ol>
+                    <li>Ensure you have the correct folder path where your files are located.</li>
+                    <li>Enter the folder path in the input field provided.</li>
+                    <li>Click the "Submit" button to proceed.</li>
+                    <li>Once submitted, click the "Generate CV Details" button to generate CV details.</li>
+                </ol>
+                <button id="generateButton"
+                    style="background-color: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px 20px; display: block; margin: 20px auto;">Generate
+                    CV Details</button>
 
-    <button id="generateButton" style="background-color: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px 20px; display: block; margin: 20px auto;">Generate CV Details</button>
+            </div>
+        </div>
+        <div class="img">
+            <img src="{{ url_for('static', filename='image/intro-mobile_2.png') }}" alt="Image Description">
+            <ol>
+        </div>
+    </div>
+
 
     <script>
         document.getElementById('generateButton').addEventListener('click', function () {
