@@ -3,6 +3,4 @@ python-docx
 openpyxl
 pandas
 PyPDF2
-
-
 gunicorn
