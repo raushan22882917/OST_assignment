@@ -140,4 +140,5 @@ def generate_cv_details():
 
     return html_output
 
-
+if __name__ == '__main__':
+    app.run(debug=True)
