@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Data Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #generateButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #generateButton:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>File Data Extractor</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="folder_path">Enter Folder Path:</label>
+            <input type="text" id="folder_path" name="folder_path">
+        </div>
+        <button type="submit" style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px; width: 100%;">Submit</button>
+    </form>
+
+    <button id="generateButton" style="background-color: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px 20px; display: block; margin: 20px auto;">Generate CV Details</button>
+
+    <script>
+        document.getElementById('generateButton').addEventListener('click', function () {
+            fetch('/generate_cv_details', {
+                method: 'POST',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    var newWindow = window.open();
+                    newWindow.document.open();
+                    newWindow.document.write(data);
+                    newWindow.document.close();
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>
