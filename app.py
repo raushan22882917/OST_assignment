@@ -151,7 +151,7 @@ def index():
 
 @app.route('/generate_cv_details', methods=['POST'])
 def generate_cv_details():
-    excel_file_path = os.path.join('K:/INTERNDATA', 'file_data.xlsx')
+    excel_file_path = os.path.join('file_data.xlsx')
     clean_excel_file(excel_file_path)
     # Read the cleaned Excel file
     data = pd.read_excel(excel_file_path)
