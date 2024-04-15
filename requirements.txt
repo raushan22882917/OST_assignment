@@ -3,7 +3,7 @@ python-docx
 openpyxl
 pandas
 PyPDF2
-pywin32==301
+pywin32==306
 
 
 
