@@ -1,5 +1,5 @@
 import os
-import win32com.client
+# import win32com.client
 from docx import Document
 from PyPDF2 import PdfReader
 import openpyxl
@@ -28,15 +28,15 @@ def extract_text_from_pdf(pdf_path):
             text += reader.pages[page_num].extract_text()
         return text
 
-def convert_doc_to_docx(doc_file):
-    pythoncom.CoInitialize()  # Initialize COM
-    word = win32com.client.Dispatch("Word.Application")
-    doc = word.Documents.Open(doc_file)
-    docx_file = doc_file.replace(".doc", ".docx")
-    doc.SaveAs(docx_file, FileFormat=16)  # FileFormat 16 represents .docx
-    doc.Close()
-    word.Quit()
-    return docx_file
+# def convert_doc_to_docx(doc_file):
+#     pythoncom.CoInitialize()  # Initialize COM
+#     # word = win32com.client.Dispatch("Word.Application")
+#     doc = word.Documents.Open(doc_file)
+#     docx_file = doc_file.replace(".doc", ".docx")
+#     doc.SaveAs(docx_file, FileFormat=16)  # FileFormat 16 represents .docx
+#     doc.Close()
+#     word.Quit()
+#     return docx_file
 
 def clean_excel_file(excel_file_path):
     if os.path.exists(excel_file_path):
