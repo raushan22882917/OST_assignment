@@ -1,12 +1,12 @@
 import os
-# import win32com.client
+import win32com.client
 from docx import Document
 from PyPDF2 import PdfReader
 import openpyxl
 import pandas as pd
 import re
 from flask import Flask, render_template, request, redirect
-# import pythoncom
+import pythoncom
 
 app = Flask(__name__)
 
@@ -28,15 +28,15 @@ def extract_text_from_pdf(pdf_path):
             text += reader.pages[page_num].extract_text()
         return text
 
-# def convert_doc_to_docx(doc_file):
-#     pythoncom.CoInitialize()  # Initialize COM
-#     word = win32com.client.Dispatch("Word.Application")
-#     doc = word.Documents.Open(doc_file)
-#     docx_file = doc_file.replace(".doc", ".docx")
-#     doc.SaveAs(docx_file, FileFormat=16)  # FileFormat 16 represents .docx
-#     doc.Close()
-#     word.Quit()
-#     return docx_file
+def convert_doc_to_docx(doc_file):
+    pythoncom.CoInitialize()  # Initialize COM
+    word = win32com.client.Dispatch("Word.Application")
+    doc = word.Documents.Open(doc_file)
+    docx_file = doc_file.replace(".doc", ".docx")
+    doc.SaveAs(docx_file, FileFormat=16)  # FileFormat 16 represents .docx
+    doc.Close()
+    word.Quit()
+    return docx_file
 
 def clean_excel_file(excel_file_path):
     if os.path.exists(excel_file_path):
@@ -75,7 +75,7 @@ def clean_phone_number(phone_number):
 def index():
     if request.method == 'POST':
         folder_path = request.form['folder_path']
-        excel_file_path = os.path.join(folder_path, 'https://github.com/raushan22882917/OST_assignment/blob/main', 'file_data.xlsx')
+        excel_file_path = os.path.join(folder_path, 'K:/INTERNDATA', 'file_data.xlsx')
         # Clear old data from the Excel file
         if os.path.exists(excel_file_path):
             os.remove(excel_file_path)
@@ -142,7 +142,7 @@ def index():
         worksheet.append(['File Name', 'Text Content', 'Email', 'Mobile Number'])
         for file_name, text_content, email, mobile_number in file_data:
             worksheet.append([file_name, text_content, email, mobile_number])
-        output_folder_path = os.path.join(folder_path, 'https://github.com/raushan22882917/OST_assignment/blob/main')
+        output_folder_path = os.path.join(folder_path, 'K:/INTERNDATA')
         os.makedirs(output_folder_path, exist_ok=True)
         clean_excel_file(excel_file_path)
         workbook.save(excel_file_path)
@@ -151,7 +151,7 @@ def index():
 
 @app.route('/generate_cv_details', methods=['POST'])
 def generate_cv_details():
-    excel_file_path = os.path.join('https://github.com/raushan22882917/OST_assignment/blob/main', 'file_data.xlsx')
+    excel_file_path = os.path.join('K:/INTERNDATA', 'file_data.xlsx')
     clean_excel_file(excel_file_path)
     # Read the cleaned Excel file
     data = pd.read_excel(excel_file_path)
