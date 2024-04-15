@@ -4,7 +4,7 @@ openpyxl
 pandas
 PyPDF2
 
-pywin32==306
+
 
 
 gunicorn
