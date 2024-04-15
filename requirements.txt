@@ -4,6 +4,7 @@ openpyxl
 pandas
 PyPDF2
 
+PyMuPDF
 
 
 
