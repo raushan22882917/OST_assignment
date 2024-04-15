@@ -62,7 +62,7 @@ def clean_phone_number(phone_number):
 def index():
     if request.method == 'POST':
         folder_path = request.form['folder_path']
-        excel_file_path = os.path.join(folder_path, 'https://github.com/raushan22882917/OST_assignment/blob/dfde1065c64cffa96d8771ea10e31285d3609759/', 'file_data.xlsx')
+        excel_file_path = os.path.join(folder_path, 'file_data.xlsx')
         # Clear old data from the Excel file
         if os.path.exists(excel_file_path):
             os.remove(excel_file_path)
@@ -96,7 +96,7 @@ def index():
         worksheet.append(['File Name', 'Text Content', 'Email', 'Mobile Number'])
         for file_name, text_content, email, mobile_number in file_data:
             worksheet.append([file_name, text_content, email, mobile_number])
-        output_folder_path = os.path.join(folder_path, 'https://github.com/raushan22882917/OST_assignment/blob/dfde1065c64cffa96d8771ea10e31285d3609759/')
+        output_folder_path = os.path.join(folder_path, 'output')
         os.makedirs(output_folder_path, exist_ok=True)
         clean_excel_file(excel_file_path)
         workbook.save(excel_file_path)
@@ -105,7 +105,7 @@ def index():
 
 @app.route('/generate_cv_details', methods=['POST'])
 def generate_cv_details():
-    excel_file_path = os.path.join('file_data.xlsx')
+    excel_file_path = 'file_data.xlsx'
     clean_excel_file(excel_file_path)
     # Read the cleaned Excel file
     data = pd.read_excel(excel_file_path)
