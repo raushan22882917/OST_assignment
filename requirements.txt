@@ -3,6 +3,6 @@ python-docx
 openpyxl
 pandas
 PyPDF2
-pywin32==306; platform_system=="Windows"
+
 
 gunicorn
