@@ -3,6 +3,8 @@ python-docx
 openpyxl
 pandas
 PyPDF2
+pywin32
+
 
 
 gunicorn
