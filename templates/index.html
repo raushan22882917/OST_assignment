@@ -112,38 +112,124 @@
             width: 200px;
             height: 200px;
         }
+
+        .direction {
+            width: 400px;
+            height: 500px;
+            background-color: transparent;
+            margin-top: 50px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            /* Adjust container width and margins */
+            .container {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        
+            /* Adjust form width */
+            form {
+                width: 90%;
+            }
+        
+            /* Adjust image size */
+            .img img {
+                width: 100%;
+                height: auto;
+            }
+        
+            /* Adjust direction width */
+            .direction {
+                width: 90%;
+                margin: 20px auto;
+                direction: column;
+            }
+        }
+        
+
+
     </style>
 </head>
 
 <body>
-    <div display="flex">
-        <div class="container">
-            <div>
-                <form method="POST">
-                    <div class="form-group">
-                        <label for="folder_path">Enter Folder Path:</label>
-                        <input type="text" id="folder_path" name="folder_path">
-                    </div>
-                    <button type="submit"
-                        style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px; width: 100%;">Submit</button>
-                </form>
-            </div>
-            <div class="instruction">
-                <ol>
-                    <li>Ensure you have the correct folder path where your files are located.</li>
-                    <li>Enter the folder path in the input field provided.</li>
-                    <li>Click the "Submit" button to proceed.</li>
-                    <li>Once submitted, click the "Generate CV Details" button to generate CV details.</li>
-                </ol>
-                <button id="generateButton"
-                    style="background-color: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px 20px; display: block; margin: 20px auto;">Generate
-                    CV Details</button>
+    <div style="display:flex;">
+        <div display="flex">
+            <div class="container">
+                <div>
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="folder_path">Enter Folder Path:</label>
+                            <input type="text" id="folder_path" name="folder_path">
+                        </div>
+                        <button type="submit"
+                            style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px; width: 100%;">Submit</button>
+                    </form>
+                </div>
+                <div class="instruction">
+                    <ol>
+                        <li>Ensure you have the correct folder path where your files are located.</li>
+                        <li>Enter the folder path in the input field provided.</li>
+                        <li>Click the "Submit" button to proceed.</li>
+                        <li>Once submitted, click the "Generate CV Details" button to generate CV details.</li>
+                    </ol>
+                    <button id="generateButton"
+                        style="background-color: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 10px 20px; display: block; margin: 20px auto;">Generate
+                        CV Details</button>
 
+                </div>
+            </div>
+            <div class="img">
+                <img src="{{ url_for('static', filename='image/intro-mobile_2.png') }}" alt="Image Description">
+                <ol>
             </div>
         </div>
-        <div class="img">
-            <img src="{{ url_for('static', filename='image/intro-mobile_2.png') }}" alt="Image Description">
+
+        <div class="direction">
+            <h1>Main Points of the Code</h1>
             <ol>
+                <li>
+                    <strong>Functionality:</strong>
+                    <ul>
+                        <li>The script processes documents (Word and PDF files) in a specified folder to extract
+                            information like email addresses, phone numbers, and text content.</li>
+                        <li>Extracted data is saved into an Excel file for further processing.</li>
+                        <li>The script provides a web interface for users to input a folder path and view processed
+                            data.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Libraries Used:</strong>
+                    <ul>
+                        <li>The script utilizes various libraries/modules such as <code>os</code>,
+                            <code>win32com.client</code>, <code>docx</code>, <code>PyPDF2</code>, <code>openpyxl</code>,
+                            <code>pandas</code>, <code>re</code>, and <code>Flask</code>.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Flask Routes:</strong>
+                    <ul>
+                        <li>Two Flask routes are defined: <code>'/'</code> for handling folder path input and file
+                            processing, and <code>'/generate_cv_details'</code> for generating HTML output of the
+                            processed CV details.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>HTML Output:</strong>
+                    <ul>
+                        <li>The HTML output displays CV details like filename, email, phone number, and text content in
+                            a formatted manner using HTML cards.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>JavaScript Functionality:</strong>
+                    <ul>
+                        <li>JavaScript functions enable the display of a larger view of CV details when a card is
+                            clicked and provide functionality to close the large view when clicked outside the card.
+                        </li>
+                    </ul>
+                </li>
+            </ol>
         </div>
     </div>
 
