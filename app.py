@@ -1,12 +1,10 @@
 import os
-# import win32com.client
+import fitz  # PyMuPDF for PDF processing
 from docx import Document
-from PyPDF2 import PdfReader
 import openpyxl
 import pandas as pd
 import re
 from flask import Flask, render_template, request, redirect
-# import pythoncom
 
 app = Flask(__name__)
 
@@ -21,22 +19,11 @@ def extract_text_from_docx(docx_path):
     return '\n'.join(full_text)
 
 def extract_text_from_pdf(pdf_path):
-    with open(pdf_path, 'rb') as file:
-        reader = PdfReader(file)
-        text = ''
-        for page_num in range(len(reader.pages)):
-            text += reader.pages[page_num].extract_text()
-        return text
-
-# def convert_doc_to_docx(doc_file):
-#     pythoncom.CoInitialize()  # Initialize COM
-#     # word = win32com.client.Dispatch("Word.Application")
-#     doc = word.Documents.Open(doc_file)
-#     docx_file = doc_file.replace(".doc", ".docx")
-#     doc.SaveAs(docx_file, FileFormat=16)  # FileFormat 16 represents .docx
-#     doc.Close()
-#     word.Quit()
-#     return docx_file
+    text = ""
+    with fitz.open(pdf_path) as doc:
+        for page in doc:
+            text += page.get_text()
+    return text
 
 def clean_excel_file(excel_file_path):
     if os.path.exists(excel_file_path):
@@ -75,7 +62,7 @@ def clean_phone_number(phone_number):
 def index():
     if request.method == 'POST':
         folder_path = request.form['folder_path']
-        excel_file_path = os.path.join(folder_path, 'K:/INTERNDATA', 'file_data.xlsx')
+        excel_file_path = os.path.join(folder_path, 'uploads', 'file_data.xlsx')
         # Clear old data from the Excel file
         if os.path.exists(excel_file_path):
             os.remove(excel_file_path)
@@ -86,63 +73,30 @@ def index():
                 if file_path not in processed_files:  # Check if file already processed
                     if file.endswith('.docx'):
                         text = extract_text_from_docx(file_path)
-                        email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
-                        phone_number_match = re.search(r'\b\d{10}\b', text)
-                        if email_match:
-                            email = email_match.group()
-                        else:
-                            potential_emails, _ = extract_email_and_phone(text)
-                            email = clean_email(potential_emails[0]) if potential_emails else None
-                        if email not in processed_emails:
-                            if phone_number_match:
-                                phone_number = phone_number_match.group()
-                            else:
-                                _, potential_phone_numbers = extract_email_and_phone(text)
-                                phone_number = clean_phone_number(potential_phone_numbers[0]) if potential_phone_numbers else None
-                            file_data.append((file, text, email, phone_number))
-                            processed_emails.add(email)
-                    elif file.endswith('.doc'):
-                        docx_file_path = convert_doc_to_docx(file_path)
-                        text = extract_text_from_docx(docx_file_path)
-                        email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
-                        phone_number_match = re.search(r'\b\d{10}\b', text)
-                        if email_match:
-                            email = email_match.group()
-                        else:
-                            potential_emails, _ = extract_email_and_phone(text)
-                            email = clean_email(potential_emails[0]) if potential_emails else None
-                        if email not in processed_emails:
-                            if phone_number_match:
-                                phone_number = phone_number_match.group()
-                            else:
-                                _, potential_phone_numbers = extract_email_and_phone(text)
-                                phone_number = clean_phone_number(potential_phone_numbers[0]) if potential_phone_numbers else None
-                            file_data.append((os.path.basename(docx_file_path), text, email, phone_number))  # Use docx file name
-                            processed_emails.add(email)
                     elif file.endswith('.pdf'):
                         text = extract_text_from_pdf(file_path)
-                        email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
-                        phone_number_match = re.search(r'\b\d{10}\b', text)
-                        if email_match:
-                            email = email_match.group()
+                    email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
+                    phone_number_match = re.search(r'\b\d{10}\b', text)
+                    if email_match:
+                        email = email_match.group()
+                    else:
+                        potential_emails, _ = extract_email_and_phone(text)
+                        email = clean_email(potential_emails[0]) if potential_emails else None
+                    if email not in processed_emails:
+                        if phone_number_match:
+                            phone_number = phone_number_match.group()
                         else:
-                            potential_emails, _ = extract_email_and_phone(text)
-                            email = clean_email(potential_emails[0]) if potential_emails else None
-                        if email not in processed_emails:
-                            if phone_number_match:
-                                phone_number = phone_number_match.group()
-                            else:
-                                _, potential_phone_numbers = extract_email_and_phone(text)
-                                phone_number = clean_phone_number(potential_phone_numbers[0]) if potential_phone_numbers else None
-                            file_data.append((file, text, email, phone_number))
-                            processed_emails.add(email)
+                            _, potential_phone_numbers = extract_email_and_phone(text)
+                            phone_number = clean_phone_number(potential_phone_numbers[0]) if potential_phone_numbers else None
+                        file_data.append((file, text, email, phone_number))
+                        processed_emails.add(email)
                     processed_files.add(file_path)  # Add the processed file path
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
         worksheet.append(['File Name', 'Text Content', 'Email', 'Mobile Number'])
         for file_name, text_content, email, mobile_number in file_data:
             worksheet.append([file_name, text_content, email, mobile_number])
-        output_folder_path = os.path.join(folder_path, 'K:/INTERNDATA')
+        output_folder_path = os.path.join(folder_path, 'uploads')
         os.makedirs(output_folder_path, exist_ok=True)
         clean_excel_file(excel_file_path)
         workbook.save(excel_file_path)
@@ -151,7 +105,7 @@ def index():
 
 @app.route('/generate_cv_details', methods=['POST'])
 def generate_cv_details():
-    excel_file_path = os.path.join('file_data.xlsx')
+    excel_file_path = os.path.join('uploads/file_data.xlsx')
     clean_excel_file(excel_file_path)
     # Read the cleaned Excel file
     data = pd.read_excel(excel_file_path)
